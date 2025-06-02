@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import img1 from '../assets/Somes_Dash.jpg'
 import file from '../assets/Somes_Dash_Resume_DS.pdf'

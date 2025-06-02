@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  base: '/YOUR_REPO_NAME/',
+  base: '/SD_Portfolio/',
   plugins: [react()],
   server: {
     proxy: {

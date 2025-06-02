@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap';
 import BubbleBackground from './BubbleBackground';
 import { FaGithub } from 'react-icons/fa';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaChevronDown } from 'react-icons/fa';
 
 interface Project {
     title: string;
