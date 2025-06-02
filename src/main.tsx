@@ -12,7 +12,7 @@ import Contact from './component/Contact.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/SD_Portfolio">
       <Routes>
          <Route path="/" element={<App />}>
           <Route index path='/' element={<Frontsection />} />
