@@ -1,10 +1,9 @@
 import { Col, Container, Row } from 'react-bootstrap'
-import img1 from '../assets/off.jpg'
+import img1 from '../assets/personal/12.jpg'
 
 const About = () => {
     return (
         <div>
-
             <section
                 id="about"
                 className="py-5 about-section"
@@ -64,16 +63,15 @@ const About = () => {
                                 <li>🌱 A learner at heart — always exploring the next technology</li>
                             </ul>
                         </Col>
-                        <Col md={4} className="text-center mb-4 mb-md-0">
-                            <div className="profile-blob-wrapper">
-                                <div className="rotating-blob">
-                                    <img src={img1} alt="Shom" className="profile-blob-image" />
-                                </div>
-                            </div>
+                        <Col md={4}>
+                            <img src={img1} alt="Profile" className="profile-image" />
                         </Col>
                     </Row>
                 </Container>
+
             </section>
+
+
 
         </div>
     )

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Card, Col, Container, Modal, Row } from 'react-bootstrap';
-import img1 from '../assets/Somes_Dash.jpg'
+import img1 from '../assets/personal/14.jpg'
 import FE from '../assets/certificates/FE.jpg'
 import DS from '../assets/certificates/DS.png'
 import { motion } from 'framer-motion';
@@ -77,63 +77,63 @@ const Carrier = () => {
 
     return (
         <React.Fragment>
-            <section className="py-5 bg-dark text-white position-relative" id="career">
-                <h2 className="text-center mb-2 fw-bold text-info">
-                    From Non-IT Roots to a Data Science Career: My Journey
-                </h2>
-                <p className="text-center text-light mb-5">
-                    A journey of growth and learning — evolving from Facility Executive to React Developer, and now pursuing my passion in Data Science.
-                </p>
-                <Container className="mb-5">
-                    <Row className="align-items-center g-4">
-                        <Col md={3} className="text-center">
-                            <img
-                                src={img1}
-
-
-                                style={{ width: '150px', border: '4px solid #17a2b8' }}
-                                alt="Your Photo"
-                            />
-                        </Col>
-                        <Col md={9}>
-                            <motion.div
-                                initial={{ opacity: 0, x: -30 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 1 }}
-                            >
-                                <h3 className="fw-bold d-flex align-items-center">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="22"
-                                        height="22"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="me-2 text-info"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path d="M12 19h9" />
-                                        <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
-                                    </svg> Journey Begins
-                                </h3>
-                                <p className="lead">
-                                    Hello, I’m <strong>Somes Dash</strong>, raised in a humble middle-class family in Baliguda, Odisha. My father runs a small business, and my mother is a dedicated homemaker. As the eldest child, I embraced responsibility early on, supporting my younger sister, who is now happily married.
-                                    My educational journey began at <strong>Saraswati Sishu Vidya Mandir</strong>, where I completed my schooling in 2010.
-                                    Through various challenges and career shifts, I have grown with determination—transitioning from a Non-IT role to becoming a skilled React Developer, and now venturing boldly into the exciting field of Data Science.
-                                </p>
-                            </motion.div>
-                        </Col>
-                    </Row>
-                </Container>
+            <section className="bg-dark text-white position-relative" id="career">
+                <div className='career-journey-section'>
+                    <h2 className="text-center mb-2 fw-bold text-info">
+                        From Non-IT Roots to a Data Science Career: My Journey
+                    </h2>
+                    <p className="text-center text-light mb-5">
+                        A journey of growth and learning — evolving from Facility Executive to React Developer, and now pursuing my passion in Data Science.
+                    </p>
+                    <Container className="mb-5">
+                        <Row className="align-items-center g-4">
+                            <Col md={3} className="text-center career-photo-col"> {/* Added career-photo-col */}
+                                <img
+                                    src={img1} style={{ width: '150px', border: '4px solid #17a2b8' }}
+                                    alt="Your Photo"
+                                />
+                            </Col>
+                            <Col md={9}>
+                                <motion.div
+                                    initial={{ opacity: 0, x: -30 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 1 }}
+                                    className="career-detail-content"
+                                >
+                                    <h3 className="fw-bold d-flex align-items-center">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="22"
+                                            height="22"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            className="me-2 text-info"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path d="M12 19h9" />
+                                            <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+                                        </svg> Journey Begins
+                                    </h3>
+                                    <p className="lead">
+                                        Hello, I’m <strong>Somes Dash</strong>, raised in a humble middle-class family in Baliguda, Odisha. My father runs a small business, and my mother is a dedicated homemaker. As the eldest child, I embraced responsibility early on, supporting my younger sister, who is now happily married.
+                                        My educational journey began at <strong>Saraswati Sishu Vidya Mandir</strong>, where I completed my schooling in 2010.
+                                        Through various challenges and career shifts, I have grown with determination—transitioning from a Non-IT role to becoming a skilled React Developer, and now venturing boldly into the exciting field of Data Science.
+                                    </p>
+                                </motion.div>
+                            </Col>
+                        </Row>
+                    </Container>
+                </div>
                 <Container>
 
                     <Row className="gy-4">
                         {careerData.map((item, index) => (
                             <Col md={6} key={index}>
                                 <Card
-                                    className="h-100 p-3 custom-shadow text-white border-0 hoverable-card"
+                                    className="h-100 p-3 custom-shadow text-white border-0"
                                     onClick={() => setSelectedStep(item)}
                                 >
                                     <Card.Body>

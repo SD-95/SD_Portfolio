@@ -128,25 +128,8 @@ Step 2: API Backend: Developed RESTful API in Flask with SQLite integration.
 Step 3: CRUD Features: Implemented Create, Read, Update, Delete functionalities.
 Step 4: Page Routing: Enabled seamless page transitions for different blog actions.`,
             conclusion: 'Deployed a clean, functional blogging app with intuitive user experience and full-stack integration.',
-            githubLink: 'https://github.com/your-username/blog-speaks-app'
-        },
-        {
-    title: 'AI Portfolio Chatbot Assistant',
-    icon: '🤖',
-    desc: 'Conversational chatbot integrated into portfolio to enhance user interaction and handle queries dynamically.',
-    problem:
-        'Visitors often leave portfolios without engaging deeply due to static content or lack of interactive support, making it harder to capture interest or collect feedback.',
-    goal:
-        'Build a smart chatbot assistant that provides real-time responses, answers questions about the portfolio, and offers a fallback contact form if users need more help. This ensures personalized interaction and improves visitor engagement.',
-    process: `Step 1: Chatbot Design: Designed a modal-based chatbot interface using React, TypeScript, and Bootstrap.
-Step 2: Backend Setup: Built a Node.js + Express server integrated with OpenAI API for conversational responses.
-Step 3: Gmail Integration: Configured Gmail OAuth2 with Nodemailer to securely send contact form submissions.
-Step 4: Smart Fallback: Added fallback form triggered when the chatbot can't resolve a query.
-Step 5: Deployment: Connected frontend and backend for seamless chatbot experience within the portfolio.`,
-    conclusion:
-        'Integrated a fully functional chatbot within the portfolio that boosts user engagement, streamlines communication, and provides a personalized touch using AI and secure email fallback.',
-    githubLink: 'https://github.com/your-username/portfolio-chatbot-assistant'
-}
+            githubLink: 'https://sd-95.github.io/blog_speak_frontend/'
+        }
     ];
 
     const handleShow = (project: Project) => {

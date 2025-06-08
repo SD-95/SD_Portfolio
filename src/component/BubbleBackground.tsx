@@ -9,6 +9,13 @@ const BubbleBackground: React.FC = () => {
       const bubble = document.createElement("div");
       const size = Math.random() * 60 + 20;
 
+      // Generate a random RGBA color (rainbow-ish)
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      const alpha = (Math.random() * 0.5 + 0.3).toFixed(2); // opacity between 0.3 – 0.8
+      bubble.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+
       bubble.className = "bubble";
       bubble.style.width = `${size}px`;
       bubble.style.height = `${size}px`;
@@ -19,7 +26,6 @@ const BubbleBackground: React.FC = () => {
       container.appendChild(bubble);
     }
 
-    // Optional: Cleanup if you want to remove the bubbles on unmount
     return () => {
       container.innerHTML = "";
     };
