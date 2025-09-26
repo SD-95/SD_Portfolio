@@ -10,12 +10,13 @@ import About from './component/About.tsx';
 import Project from './component/Project.tsx';
 import Carrier from './component/Carrier.tsx';
 import Contact from './component/Contact.tsx';
+import Vistora_landingPage from './component/Vistora_landingpage.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter basename="/SD_Portfolio">
       <Routes>
-         <Route path="/" element={<App />}>
+        <Route path="/" element={<App />}>
           <Route index path='/' element={<Frontsection />} />
           <Route path='/home' element={<Frontsection />} />
           <Route path="about" element={<About />} />
@@ -23,6 +24,10 @@ createRoot(document.getElementById('root')!).render(
           <Route path="Carrier" element={<Carrier />} />
           <Route path="contact" element={<Contact />} />
         </Route>
+        <Route>
+          <Route path='Vistora_landingpage' element={<Vistora_landingPage />} />
+        </Route>
+
       </Routes>
     </BrowserRouter>
 

@@ -11,6 +11,11 @@ import {
 import BubbleBackground from './BubbleBackground';
 import { FaGithub } from 'react-icons/fa';
 import { FaChevronDown } from 'react-icons/fa';
+import vistora from '../assets/circle_logo.png'
+import blog from '../assets/blog.png'
+import crypto from '../assets/crypto.jpg'
+import { MdFiberNew } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 interface Project {
     title: string;
@@ -21,6 +26,10 @@ interface Project {
     process: string;
     conclusion: string;
     githubLink?: string;
+    banner_text?: string;   // ✅ New: banner image for top portion
+    recent?: boolean;  // ✅ New: recently added flag
+    recent_message?: string;  // ✅ New: recently added flag
+    showOnLandingPage?: boolean;
 }
 
 interface StepperProps {
@@ -96,13 +105,15 @@ const ExpandableCard = ({ title, content }: { title: string, content: string }) 
 };
 
 const Project: React.FC = () => {
+    const navigate = useNavigate();
     const [showCanvas, setShowCanvas] = useState(false);
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+    const [loading, setLoading] = useState(false);
 
     const projectsData: Project[] = [
         {
             title: 'Crypto Liquidity Predictor',
-            icon: '💹',
+            icon: crypto,
             desc: 'Machine learning-based system to predict crypto liquidity and ensure market stability.',
             problem:
                 `Cryptocurrency markets often experience sudden liquidity fluctuations due to volatile trading volumes, irregular transaction patterns, exchange dynamics, and social media influence. These unpredictable shifts pose significant risks to traders and exchange platforms, making it challenging to manage asset stability and trading strategies effectively.`,
@@ -115,11 +126,12 @@ Step 4: Evaluation: Compared models using R², RMSE, MAE, and confusion matrix f
 Step 5: Deployment: Built a React UI and Flask backend, locally deployed the system for real-time testing.`,
             conclusion:
                 'The project successfully developed a multi-class classification model to predict cryptocurrency liquidity levels using engineered market features and time-series data. The combined Random Forest and LSTM models achieved strong performance, enabling real-time liquidity crisis detection through a deployed Flask API. This solution supports informed decision-making and enhances market stability.',
-            githubLink: 'https://github.com/SD-95/Crypto_Liquidity_Predictor_Reactversion'
+            githubLink: 'https://sd-95.github.io/crypto_frontend/',
+            showOnLandingPage: false
         },
         {
             title: 'Blog Speaks webApp',
-            icon: '📝',
+            icon: blog,
             desc: 'A blogging platform with full CRUD support using React and Flask.',
             problem: 'Lack of a minimal, user-friendly platform for managing blog content dynamically.',
             goal: 'Create a secure, dynamic blogging app with token-based authentication and CRUD APIs.',
@@ -128,13 +140,43 @@ Step 2: API Backend: Developed RESTful API in Flask with SQLite integration.
 Step 3: CRUD Features: Implemented Create, Read, Update, Delete functionalities.
 Step 4: Page Routing: Enabled seamless page transitions for different blog actions.`,
             conclusion: 'Deployed a clean, functional blogging app with intuitive user experience and full-stack integration.',
-            githubLink: 'https://sd-95.github.io/blog_speak_frontend/'
+            githubLink: 'https://sd-95.github.io/blog_speak_frontend/',
+            showOnLandingPage: false
+        },
+        {
+            title: 'Ecommerce App + Admin console (VISTORA)',
+            icon: vistora,
+            desc: 'Vistora React Native E-commerce app with an integrated Admin Console to manage products, users, and orders in real time.',
+            problem: 'Lack of a minimal, user-friendly platform for managing blog content dynamically.',
+            goal: 'Create a secure, dynamic blogging app with token-based authentication and CRUD APIs.',
+            process: `Step 1: UI Design: Built a responsive frontend using React and Bootstrap.
+Step 2: API Backend: Developed RESTful API in Flask with SQLite integration.
+Step 3: CRUD Features: Implemented Create, Read, Update, Delete functionalities.
+Step 4: Page Routing: Enabled seamless page transitions for different blog actions.`,
+            conclusion: 'Deployed a clean, functional blogging app with intuitive user experience and full-stack integration.',
+            githubLink: 'https://sd-95.github.io/blog_speak_frontend/',
+            banner_text: 'The Project is under development....',
+            recent: true,
+            recent_message: 'Released..',
+            showOnLandingPage: true
         }
     ];
 
     const handleShow = (project: Project) => {
-        setSelectedProject(project);
-        setShowCanvas(true);
+        if (project.showOnLandingPage) {
+            // Show loader
+            setLoading(true);
+
+            // Wait 1.5s (or any duration) then redirect
+            setTimeout(() => {
+                setLoading(false);
+                navigate(`/Vistora_landingpage`);
+            }, 1500);
+        } else {
+            // 👉 Show Offcanvas
+            setSelectedProject(project);
+            setShowCanvas(true);
+        }
     };
 
     const handleClose = () => {
@@ -145,28 +187,70 @@ Step 4: Page Routing: Enabled seamless page transitions for different blog actio
     return (
         <section id="projects" className="py-5 bg-dark text-white" style={{ minHeight: '100vh' }}>
             <BubbleBackground />
+            {loading && (
+                <div
+                    className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-75"
+                    style={{ zIndex: 2000 }}
+                >
+                    <div className="spinner-border text-light" role="status" style={{ width: '3rem', height: '3rem' }}>
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            )}
             <Container>
-                <h2 className="text-center mb-5 fw-bold">Projects</h2>
+                <div className="row justify-content-center align-items-center mb-5">
+                    <div className="col-12 col-md-8 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                        {/* Heading */}
+                        <h2 className="fw-bold m-0 text-white">Projects</h2>
+
+                        {/* Search bar */}
+                        <input
+                            type="text"
+                            placeholder="Search projects..."
+                            className="form-control bg-dark text-white border border-secondary rounded-pill"
+                            style={{ maxWidth: "300px" }}
+                        />
+                    </div>
+                </div>
                 <Row className="g-4">
                     {projectsData.map((project, index) => (
                         <Col md={4} key={index}>
                             <Card className="h-100 contact-card bg-dark custom_border text-white p-3 d-flex justify-content-between">
-                                <div>
-                                    <div className="icon-circle mb-3 fs-2">{project.icon}</div>
-                                    <h5>{project.title}</h5>
-                                    <p>{project.desc}</p>
+                                <div className="p-3 flex-grow-1 d-flex flex-column justify-content-between">
+                                    {/* ✅ Recently Added Ribbon */}
+                                    {project.recent && (
+                                        <div className="recent-banner">
+                                            <span><MdFiberNew size={20} />{project.recent_message}</span>
+                                        </div>
+                                    )}
+                                    <div>
+                                        <div className="icon-circle mb-3 fs-2">
+                                            <img src={project.icon} alt={`${project.title} icon`} style={{ width: "50px", height: "50px", objectFit: "contain", }} />
+                                        </div>
+                                        <h5>{project.title}</h5>
+                                        <p>{project.desc}</p>
+                                    </div>
                                 </div>
-                                <div
-                                    onClick={() => handleShow(project)}
-                                    style={{
-                                        cursor: 'pointer',
-                                        fontSize: '1.5rem',
-                                        textAlign: 'right',
-                                        marginTop: 'auto'
-                                    }}
-                                    title="View Details"
-                                >
-                                    ➜
+                                <div className="d-flex align-items-center mt-auto">
+                                    {/* ✅ Optional Banner (left side) */}
+                                    {project.banner_text && (
+                                        <div className="card-banner text-warning fw-bold me-auto">
+                                            {project.banner_text}
+                                        </div>
+                                    )}
+
+                                    {/* ✅ Arrow (always on the right side) */}
+                                    <div
+                                        onClick={() => handleShow(project)}
+                                        style={{
+                                            cursor: 'pointer',
+                                            fontSize: '1.5rem',
+                                        }}
+                                        title="View Details"
+                                        className="ms-auto"
+                                    >
+                                        ➜
+                                    </div>
                                 </div>
                             </Card>
                         </Col>

@@ -3,8 +3,13 @@ import { Card, Col, Container, Modal, Row } from 'react-bootstrap';
 import img1 from '../assets/personal/14.jpg'
 import FE from '../assets/certificates/FE.jpg'
 import DS from '../assets/certificates/DS.png'
+import ssc from '../assets/certificates/10th.jpg'
+import mech_1 from '../assets/certificates/Diploma.jpg'
+import mech_2 from '../assets/certificates/Diploma_mark_sheet.jpg'
+import BA_1 from '../assets/certificates/BA.jpg'
+import BA_2 from '../assets/certificates/BA_mark_sheet.jpg'
 import { motion } from 'framer-motion';
-import { ZoomIn } from 'lucide-react';
+import { Carousel } from "react-bootstrap";
 
 const Carrier = () => {
 
@@ -20,7 +25,7 @@ const Carrier = () => {
         title: string;
         desc: string;
         details?: string;
-        certificate?: string;
+        certificate: string[];
     }
 
     const careerData: CareerStep[] = [
@@ -29,49 +34,49 @@ const Carrier = () => {
             title: 'The Foundation: School Years',
             desc: 'Completed schooling at Saraswati Sishu Vidya Mandir, Baliguda.',
             details: `These formative years nurtured discipline, perseverance, and a strong respect for learning within a supportive middle-class family environment.`,
-            certificate: '/certificates/spruko_react.jpg'
+            certificate: [ssc]
         },
         {
             year: '2011 – 2015',
             title: 'Diploma in Mechanical Engineering – Nilachal Polytechnic, Bhubaneswar',
             desc: 'Built a solid technical foundation in mechanical engineering principles.',
             details: `Motivated by a passion for machines and design, I pursued Mechanical Engineering, mastering subjects like thermodynamics and machine design. Moving to Bhubaneswar marked a period of independence and growth, where hands-on labs and industry exposure strengthened my problem-solving skills and adaptability.`,
-            certificate: '/certificates/spruko_react.jpg'
+            certificate: [mech_1, mech_2]
         },
         {
             year: '2015 – 2019',
             title: 'Facility Executive – Sodexo Technical Services (Client: Tata Consultancy Services, Hyderabad)',
             desc: 'Gained hands-on experience in operations and client coordination.',
             details: `Oversaw facility operations including security systems (LTS), access card management, and HVAC coordination. Maintained daily reports and directly interacted with client-side administration, building strong organizational and communication skills in a corporate environment.`,
-            certificate: '/certificates/spruko_react.jpg'
+            certificate: []
         },
         {
             year: '2018 – 2021',
             title: 'Bachelor of Arts in Economics – Berhampur University',
             desc: 'Developed analytical thinking and explored new career possibilities.',
             details: `Pursued a degree in Economics with a major focus on understanding market trends and data analysis. During this period, I began exploring the IT sector, recognizing its potential for growth and long-term career development.`,
-            certificate: '/certificates/spruko_react.jpg'
+            certificate: [BA_1, BA_2]
         },
         {
             year: '2021 – 2022',
             title: 'Frontend Development Course – BIT Technologies, Hyderabad',
             desc: 'Laid the foundation for an IT career during the pandemic.',
             details: `Amid the global COVID-19 pandemic and a challenging job market, I decided to pivot my career into the IT industry. I enrolled in a frontend development course at BIT Technologies, where I built a strong foundation in HTML, CSS, and JavaScript. I later advanced to React.js, mastering its core concepts and dynamic capabilities — setting the stage for my journey as a frontend developer.`,
-            certificate: FE
+            certificate: [FE]
         },
         {
             year: '2022 – 2024',
             title: 'React.js Developer – Spruko Technologies Pvt. Ltd., Hyderabad',
             desc: 'Kickstarted my IT career as a Frontend Developer.',
             details: `Worked on building responsive dashboards and e-commerce platforms using React.js, Redux, and React Router in a Vite environment. Integrated Firebase authentication and developed reusable UI components with React-Bootstrap, Tailwind CSS, and Material UI. Also handled debugging, documentation, and live client support.`,
-            certificate: '/certificates/spruko_react.jpg'
+            certificate: []
         },
         {
             year: '2024 – 2025',
             title: 'Transition to Data Science with Generative AI at PW-skills',
             desc: 'Upskilled for a career in data and AI.',
             details: `Realizing it was the right time to grow with emerging technologies, I pursued a course in Data Science with a focus on Generative AI. This helped me strengthen my analytical skills and gain practical knowledge to step into the world of data-driven innovation. I’m now actively seeking opportunities in this domain.`,
-            certificate: DS
+            certificate: [DS]
         }
     ];
 
@@ -163,53 +168,98 @@ const Carrier = () => {
                             }}
                         ></div>
                         <motion.div
-                            className="expanded-card position-fixed top-50 start-50 translate-middle w-75"
-                            style={{ zIndex: 1050 }}
-                            initial={{ opacity: 0, scale: 9 }}
-                            animate={{ opacity: 1, scale: 5 }}
-                            transition={{ duration: 0.9 }}
+                            className="expanded-card position-fixed top-50 start-50 translate-middle"
+                            style={{ zIndex: 1050, width: "90%", maxWidth: "1200px" }} // ✅ responsive width
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.5 }}
                         >
-                            <Card className="p-4 custom-shadow text-white border-0" style={{ backgroundColor: '#212529', height: '400px' }}>
-                                <Card.Body className="h-100">
-                                    <div className="row h-100">
-                                        <h4 className="fw-bold">{selectedStep.title}</h4>
-                                        <div className="col-md-6 d-flex flex-column justify-content-center" style={{ maxHeight: '250px', overflowY: 'auto' }}>
+                            <Card
+                                className="p-4 custom-shadow text-white border-0"
+                                style={{
+                                    backgroundColor: "#212529",
+                                    maxHeight: "90vh", // ✅ responsive height
+                                    overflowY: "auto", // scroll if content overflows
+                                }}
+                            >
+                                <Card.Body>
+                                    <div className="row g-3">
+                                        {/* Title */}
+                                        <div className="col-12">
+                                            <h4 className="fw-bold">{selectedStep.title}</h4>
                                             <h6 className="text-light">{selectedStep.year}</h6>
-                                            <div className="custom-scrollbar" style={{ overflowY: 'auto' }}>
+                                        </div>
+
+                                        {/* Details Section */}
+                                        <div className="col-md-6 d-flex flex-column justify-content-start">
+                                            <div className="custom-scrollbar" style={{ overflowY: "auto", maxHeight: "60vh" }}>
                                                 <p>{selectedStep.details}</p>
                                             </div>
                                         </div>
+
+                                        {/* Certificate Section */}
                                         <div
                                             className="col-md-6 text-center d-flex align-items-center justify-content-center position-relative certificate-container"
-                                            style={{ cursor: 'zoom-in' }}
+                                            style={{ cursor: selectedStep.certificate.length ? "zoom-in" : "default" }}
                                         >
-                                            <img
-                                                src={selectedStep.certificate}
-                                                alt="Certificate"
-                                                className="img-fluid rounded border border-light shadow certificate-image"
-                                                style={{ maxHeight: '300px', objectFit: 'contain' }}
-                                            />
-                                            <div
-                                                className="zoom-icon d-flex align-items-center justify-content-center"
-                                                onClick={handleShow}
-                                            >
-                                                <ZoomIn size={40} color="#fff" />
-                                            </div>
-                                        </div>
-
-                                        <Modal show={showModal} onHide={handleClose} centered size="lg">
-                                            <Modal.Body className="p-0">
+                                            {selectedStep.certificate.length > 1 ? (
+                                                <Carousel indicators controls interval={null}>
+                                                    {selectedStep.certificate.map((cert, idx) => (
+                                                        <Carousel.Item key={idx}>
+                                                            <img
+                                                                src={cert}
+                                                                alt={`Certificate ${idx + 1}`}
+                                                                className="img-fluid rounded border border-light shadow certificate-image"
+                                                                style={{ maxHeight: "60vh", objectFit: "contain" }}
+                                                                onClick={handleShow}
+                                                            />
+                                                        </Carousel.Item>
+                                                    ))}
+                                                </Carousel>
+                                            ) : selectedStep.certificate.length === 1 ? (
                                                 <img
-                                                    src={selectedStep.certificate}
+                                                    src={selectedStep.certificate[0]}
+                                                    alt="Certificate"
+                                                    className="img-fluid rounded border border-light shadow certificate-image"
+                                                    style={{ maxHeight: "60vh", objectFit: "contain" }}
+                                                    onClick={handleShow}
+                                                />
+                                            ) : (
+                                                <p className="text-muted">No certificate available</p>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Fullscreen Modal for certificates */}
+                                    <Modal show={showModal} onHide={handleClose} centered fullscreen>
+                                        <Modal.Body className="p-0 text-center bg-dark">
+                                            {selectedStep.certificate.length > 1 ? (
+                                                <Carousel indicators controls interval={null}>
+                                                    {selectedStep.certificate.map((cert, idx) => (
+                                                        <Carousel.Item key={idx}>
+                                                            <img
+                                                                src={cert}
+                                                                alt={`Full Certificate ${idx + 1}`}
+                                                                className="w-100 h-auto"
+                                                            />
+                                                        </Carousel.Item>
+                                                    ))}
+                                                </Carousel>
+                                            ) : selectedStep.certificate.length === 1 ? (
+                                                <img
+                                                    src={selectedStep.certificate[0]}
                                                     alt="Full Certificate"
                                                     className="w-100 h-auto"
                                                 />
-                                            </Modal.Body>
-                                        </Modal>
-                                    </div>
+                                            ) : (
+                                                <p className="text-muted">No certificate available</p>
+                                            )}
+                                        </Modal.Body>
+                                    </Modal>
                                 </Card.Body>
                             </Card>
                         </motion.div>
+
                     </>
                 )}
             </section>
