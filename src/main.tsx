@@ -20,21 +20,19 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter basename="/SD_Portfolio">
       <Routes>
+        {/* Layout with Header + Footer + Outlet */}
         <Route path="/" element={<App />}>
-          <Route index path='/' element={<Frontsection />} />
-          <Route path='/home' element={<Frontsection />} />
+          <Route index element={<Frontsection />} />
+          <Route path="home" element={<Frontsection />} />
           <Route path="about" element={<About />} />
           <Route path="project" element={<Project />} />
-          <Route path="Carrier" element={<Carrier />} />
+          <Route path="carrier" element={<Carrier />} />
           <Route path="contact" element={<Contact />} />
         </Route>
-        <Route>
-          <Route path='Vistora_landingpage' element={<Vistora_landingPage />} />
-        </Route>
 
+        {/* Separate route for Vistora landing page */}
+        <Route path="Vistora_landingpage" element={<Vistora_landingPage />} />
       </Routes>
     </BrowserRouter>
-
-    {/* <App /> */}
-  </StrictMode>,
+  </StrictMode>
 )
