@@ -1,0 +1,1930 @@
+/* ========== Hero Section ========== */
+.hero-wrapper {
+  background: linear-gradient(135deg, #0f0f0f 0%, #222 100%);
+  position: relative;
+  color: #f8f9fa;
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* --- Entrance Animations (New) --- */
+/* For the text column - Note: These classes are defined in the provided CSS but not applied in the latest React component code in Canvas. I'm including them assuming you might re-add them. */
+.hero-text-animated {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+/* For the image column - Note: These classes are defined in the provided CSS but not applied in the latest React component code in Canvas. I'm including them assuming you might re-add them. */
+.hero-image-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+  opacity: 0;
+  transform: translateX(20px);
+  animation: fadeInRight 1s ease-out forwards;
+  animation-delay: 0.2s;
+}
+
+/* Keyframes for entrance animations */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* --- Text Styles --- */
+.hero-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  letter-spacing: -0.05rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 15px rgba(0, 255, 156, 0.4), 0 0 25px rgba(0, 179, 255, 0.3);
+}
+
+.highlight {
+  background: linear-gradient(to right, #00ff9c, #00b3ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.6rem;
+  color: #ddd;
+  margin: 15px 0 30px;
+  font-weight: 500;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+.hero-desc {
+  font-size: 1.15rem;
+  max-width: 550px;
+  line-height: 1.7;
+  color: #eee;
+}
+
+/* --- Resume Button --- */
+.resume-btn {
+  border: 2px solid #00ff9c;
+  color: #00ff9c;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  background-color: rgba(0, 255, 156, 0.1);
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 5px;
+}
+
+.resume-btn:hover {
+  background-color: #00ff9c;
+  color: #121212;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 255, 156, 0.4), 0 0 0 4px rgba(0, 255, 156, 0.2);
+}
+
+/* --- Image Column and Stack Styles --- */
+/* Abstract glowing background element behind the images */
+.hero-image-col::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  max-width: 450px;
+  max-height: 450px;
+  background: radial-gradient(circle at center, rgba(0, 255, 156, 0.3) 0%, transparent 60%),
+    radial-gradient(circle at top left, rgba(0, 179, 255, 0.2) 0%, transparent 70%);
+  border-radius: 50% 30% 50% 40% / 40% 50% 30% 50%;
+  filter: blur(60px);
+  z-index: 0;
+  animation: rotateGlow 20s linear infinite alternate, scaleGlow 15s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes rotateGlow {
+  from {
+    transform: rotate(0deg) scale(1);
+  }
+
+  to {
+    transform: rotate(360deg) scale(1.05);
+  }
+}
+
+@keyframes scaleGlow {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.image-stack-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  height: 450px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .image-stack-container {
+    height: 550px;
+  }
+}
+
+.image-stack-container img {
+  position: absolute;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.7s ease-in-out;
+}
+
+.image-stack-container img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Specific positioning and sizing for images */
+.main-image {
+  width: 80%;
+  height: 80%;
+  z-index: 30;
+  transform: rotate(3deg);
+}
+
+.main-image:hover {
+  transform: rotate(0deg);
+}
+
+.stacked-image-0 {
+  width: 45%;
+  height: 45%;
+  top: 0;
+  left: 0;
+  transform: translate(-25%, -25%) rotate(-12deg);
+  z-index: 20;
+}
+
+.stacked-image-1 {
+  width: 50%;
+  height: 50%;
+  bottom: 0;
+  right: 0;
+  transform: translate(25%, 25%) rotate(15deg);
+  z-index: 20;
+}
+
+.stacked-image-2 {
+  width: 40%;
+  height: 40%;
+  top: 25%;
+  left: 25%;
+  transform: translate(-50%, -50%) rotate(5deg);
+  z-index: 10;
+}
+
+.stacked-image-3 {
+  width: 35%;
+  height: 35%;
+  bottom: 25%;
+  right: 25%;
+  transform: translate(50%, -50%) rotate(-8deg);
+  z-index: 10;
+}
+
+/* Keyframes for pulsating glow (New) */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 15px 40px rgba(0, 255, 156, 0.5), 0 0 0 5px rgba(255, 255, 255, 0.1);
+  }
+
+  50% {
+    box-shadow: 0 25px 60px rgba(0, 255, 156, 0.7), 0 0 0 8px rgba(255, 255, 255, 0.2);
+  }
+
+  100% {
+    box-shadow: 0 15px 40px rgba(0, 255, 156, 0.5), 0 0 0 5px rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* This is the BubbleBackground component's CSS assuming it's structured similarly */
+.bubble-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -100px;
+  border-radius: 50%;
+  animation: rise 20s infinite ease-in;
+  pointer-events: none;
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateY(-120vh) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 991px) {
+  .hero-image-col {
+    margin-top: 50px;
+    padding: 10px;
+  }
+
+  /* Note: .image-stack and .hero-main-image/.hero-stack-image are replaced by .image-stack-container, main-image, stacked-image-X classes. 
+     The original media queries for those classes are effectively covered by the new responsive adjustments. */
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.3rem;
+  }
+
+  .hero-desc {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-wrapper {
+    padding: 80px 0;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  .hero-desc {
+    font-size: 0.9rem;
+    text-align: center;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .resume-btn {
+    margin-top: 20px;
+  }
+
+  .hero-image-col::after {
+    width: 80%;
+    height: 80%;
+  }
+}
+
+/* ========== About Section ========== */
+#about {
+  position: relative;
+  background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+  color: #fff;
+  z-index: 1;
+}
+
+#about::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 0;
+}
+
+#about * {
+  position: relative;
+  z-index: 1;
+}
+
+#about h2 span {
+  background: linear-gradient(90deg, #00ff9a, #1fc9f3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ========== Profile Picture + Blob ========== */
+.profile-pic-wrapper {
+  position: relative;
+  display: inline-block;
+  padding: 10px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #00ff9a, #007cf0, #00ff9a);
+  background-size: 400% 400%;
+  animation: animated-border 6s ease infinite;
+  box-shadow: 0 0 25px rgba(0, 255, 156, 0.4);
+}
+
+.profile-pic {
+  border-radius: 50%;
+  border: 5px solid #2c5364;
+  max-width: 250px;
+  display: block;
+}
+
+.profile-blob-wrapper {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  padding: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 255, 150, 0.3), transparent);
+}
+
+.profile-blob-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 6px solid #00ffae;
+  box-shadow: 0 0 18px rgba(0, 255, 150, 0.4);
+}
+
+.rotating-blob {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 60% 40% 60% 40% / 50% 60% 40% 60%;
+  background: radial-gradient(circle at 30% 30%, #58d68d, #1abc9c);
+  animation: rotateBlob 30s linear infinite, morphingBlob 10s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.profile-section {
+  overflow: hidden;
+  position: relative;
+}
+
+.profile-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  mask-image: linear-gradient(to right, transparent 0%, black 100%);
+  mask-mode: alpha;
+  /* Use the alpha channel of the gradient as the mask */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 100%);
+  /* For Safari and older Chrome versions */
+  -webkit-mask-mode: alpha;
+}
+
+/* Adjust the overall row to control image size and text flow */
+.about-section .row {
+  align-items: center;
+  /* Vertically align the image and text */
+}
+
+.about-wrapper {
+  position: relative;
+  overflow: hidden;
+  color: white;
+  padding: 5rem 0;
+}
+
+.about-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.about-bg-image {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+  opacity: 1;
+  z-index: 0;
+}
+
+.about-dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  /* Covers left side */
+  height: 100%;
+  background: linear-gradient(to right, rgba(15, 32, 39, 0.95), rgba(32, 58, 67, 0.85), rgba(44, 83, 100, 0.4), transparent);
+  z-index: 1;
+}
+
+/* ========== Animations ========== */
+@keyframes morphingBlob {
+
+  0%,
+  100% {
+    border-radius: 60% 40% 60% 40% / 50% 60% 40% 60%;
+  }
+
+  25% {
+    border-radius: 70% 30% 50% 60% / 60% 40% 60% 40%;
+  }
+
+  50% {
+    border-radius: 50% 70% 40% 70% / 60% 50% 70% 40%;
+  }
+
+  75% {
+    border-radius: 65% 35% 60% 45% / 45% 70% 30% 60%;
+  }
+}
+
+@keyframes rotateBlob {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes animated-border {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* ========== Carrier Section ========== */
+/* ========== Custom Shadow (for cards) ========== */
+/* Applied to the career step cards for visual effect and hover interaction */
+/* --- Carrier Page Specific Styles --- */
+
+/* Section Container Styling */
+.career-journey-section {
+  padding: 60px 0;
+  /* Add top and bottom padding for spacing */
+  background-color: #0d0d0d;
+  /* Slightly darker background for contrast */
+  color: #f8f9fa;
+  /* Light text for readability */
+}
+
+/* Main Heading Animation */
+.career-journey-section .text-info {
+  color: #0dcaf0 !important;
+  /* Ensure Bootstrap's text-info color */
+}
+
+.career-journey-section h2 {
+  font-size: 2.8rem;
+  /* Slightly larger main heading */
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 10px rgba(13, 202, 240, 0.5);
+  /* Subtle glow */
+  animation: textFadeInUp 1s ease-out forwards;
+  animation-delay: 0.2s;
+  /* Stagger animation */
+  position: relative;
+  /* For pseudo-elements */
+
+  padding-bottom: 5px;
+  /* Space for the underline */
+}
+
+.career-journey-section h2::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 3px;
+  background-color: #0dcaf0;
+  transform: translateX(-50%);
+  transition: width 0.6s ease-out;
+  animation: underlineExpand 1.5s ease-out forwards;
+  /* Underline animation */
+  animation-delay: 0.8s;
+  /* Delay after text appears */
+}
+
+@keyframes textFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes underlineExpand {
+  to {
+    width: 80%;
+    /* Expand to 80% of the h2 width */
+  }
+}
+
+
+/* Sub-paragraph animation */
+.career-journey-section p.text-light {
+  font-size: 1.15rem;
+  /* Slightly larger paragraph text */
+  max-width: 800px;
+  /* Constrain width for better readability */
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+  animation: textFadeIn 1.2s ease-out forwards;
+  animation-delay: 0.6s;
+  /* Stagger after heading */
+}
+
+@keyframes textFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Image Styling and Animation */
+.career-photo-col {
+  position: relative;
+  /* For potential pseudo-elements or overlays */
+}
+
+.career-photo-col img {
+  border-radius: 50%;
+  /* Make it a perfect circle */
+  border: 4px solid #17a2b8;
+  /* Your existing border color */
+  box-shadow: 0 0 15px rgba(23, 162, 184, 0.6);
+  /* Soft glow around the image */
+  transition: all 0.5s ease-in-out;
+  /* Smooth transition for hover effects */
+  animation: imagePopIn 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+  /* Bouncy pop-in */
+  animation-delay: 1.2s;
+  /* Delay image animation */
+}
+
+.career-photo-col img:hover {
+  transform: scale(1.05) rotate(2deg);
+  /* Slightly enlarge and rotate on hover */
+  box-shadow: 0 0 25px rgba(23, 162, 184, 0.9);
+  /* More intense glow on hover */
+  border-color: #0dcaf0;
+  /* Change border color on hover */
+}
+
+@keyframes imagePopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  80% {
+    transform: scale(1.1);
+    /* Overshoot for bouncy effect */
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Journey Section (Right Column) - Using your motion.div */
+/* The motion.div already handles initial opacity and x-axis movement.
+   We can add more subtle enhancements here. */
+.career-detail-content h3 {
+  color: #0dcaf0;
+  /* Use your info color for subheadings */
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  position: relative;
+  padding-left: 30px;
+  /* Space for the SVG icon */
+}
+
+/* SVG icon styling (already good, but ensure consistency) */
+.career-detail-content h3 svg {
+  vertical-align: middle;
+  margin-right: 10px;
+  /* More space between icon and text */
+  color: #0dcaf0;
+  /* Ensure icon color */
+}
+
+.career-detail-content p.lead {
+  color: #e0e0e0;
+  /* Slightly off-white for paragraphs */
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-top: 1rem;
+}
+
+.career-detail-content p.lead strong {
+  color: #fff;
+  /* White for strong text */
+  font-weight: 700;
+}
+
+/* Add a subtle underline animation for the subheading on hover or on scroll-in if possible with Intersection Observer */
+/* This specific effect would require JS for scroll-in, but we can do a hover for now */
+.career-detail-content h3:hover::after {
+  width: 80%;
+}
+
+.career-detail-content h3::after {
+  content: '';
+  position: absolute;
+  left: 30px;
+  /* Aligned with text after SVG */
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background-color: #0dcaf0;
+  transition: width 0.4s ease-out;
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .career-journey-section h2 {
+    font-size: 2.2rem;
+  }
+
+  .career-journey-section p.text-light {
+    font-size: 1rem;
+  }
+
+  .career-photo-col {
+    margin-bottom: 20px;
+    /* Add space below image on mobile */
+  }
+
+  .career-photo-col img {
+    width: 120px;
+    /* Smaller image on mobile */
+    height: 120px;
+  }
+
+  .career-detail-content h3 {
+    font-size: 1.8rem;
+  }
+}
+
+.custom-shadow {
+  background-color: #1e1e1e;
+  /* Dark background for the card */
+  color: #ffffff;
+  /* Ensures text is readable on the dark background */
+  border-radius: 12px;
+  transition: all 0.3s ease-in-out;
+  /* Smooth transition for hover effects */
+  box-shadow: 0 0 0 rgba(0, 255, 150, 0);
+  /* Initial shadow (transparent) */
+  margin: 20px;
+  /* Provides spacing around the cards */
+  overflow: visible;
+  /* Allows hover effects to extend beyond card bounds */
+  position: relative;
+  /* Ensures z-index can be applied */
+  z-index: 1;
+}
+
+/* Hover effect for custom-shadow cards */
+.custom-shadow:hover {
+  box-shadow: 0 8px 15px rgba(0, 255, 156, 0.5);
+  /* Glowing shadow on hover */
+  transform: translateY(-5px);
+  /* Lifts the card slightly on hover */
+}
+
+/* ========== Modal (Dark Theme Overrides) ========== */
+/* These styles customize the appearance of Bootstrap Modals for a dark theme,
+   which are used for displaying certificates in the Carrier component. */
+.modal-content {
+  background-color: #1e1e1e;
+  color: #fff;
+  border: 1px solid #444;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+.modal-header,
+.modal-body,
+.modal-footer {
+  background-color: #1e1e1e;
+  border-color: #333;
+}
+
+.modal-header .btn-close {
+  filter: invert(1);
+  /* Makes the close button white for dark background */
+}
+
+.modal-footer .btn {
+  background-color: #343a40;
+  color: #fff;
+  border: none;
+}
+
+.modal-footer .btn:hover {
+  background-color: #495057;
+}
+
+/* ========== Custom Scrollbar (for details in expanded card) ========== */
+/* Styles the scrollbar within the expanded career step details section. */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  /* Width of the scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  /* Transparent track */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  /* Color of the scrollbar thumb */
+  border-radius: 3px;
+  /* Rounded corners for the thumb */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  /* Darker thumb on hover */
+}
+
+/* ========== Backdrop (for overlay when a step is expanded) ========== */
+/* Styles the semi-transparent overlay that appears when a career step is clicked. */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+/* ========== Expanded Card (for displaying detailed step information) ========== */
+/* Styles the modal-like card that appears when a career step is selected. */
+.expanded-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  z-index: 1001;
+}
+
+/* ========== Certificate Display (within expanded card) ========== */
+/* Styles related to how the certificate image is displayed and interacted with. */
+.certificate-container {
+  position: relative;
+  /* Needed for positioning the zoom icon */
+}
+
+/* Makes the certificate image slightly transparent on hover */
+.certificate-image {
+  transition: opacity 0.3s ease;
+}
+
+/* Zoom icon that appears on hover over the certificate */
+.zoom-icon {
+  position: absolute;
+  opacity: 0;
+  /* Hidden by default */
+  transition: opacity 0.3s ease;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  /* Prevents interaction when hidden */
+}
+
+/* When hovering over the container, make the image transparent and zoom icon visible */
+.certificate-container:hover .certificate-image {
+  opacity: 0.4;
+}
+
+.certificate-container:hover .zoom-icon {
+  opacity: 1;
+  pointer-events: auto;
+  /* Allows interaction when visible */
+  cursor: pointer;
+}
+
+/* ========== Project Cards (Specific styles used by Project component) ========== */
+/* Note: Your Project component uses `.contact-card` for its main project cards,
+   not `.project-card` from the original CSS. So, this section will include the
+   `.contact-card` definition and related elements like `.icon-circle` */
+
+/* Styles for the project cards, leveraging contact-card class */
+.contact-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  /* Slightly transparent dark background */
+  border-radius: 20px;
+  /* Rounded corners */
+  box-shadow: none;
+  /* No initial shadow (relying on custom_border and hover) */
+  /* max-width: 400px; - Removed, as Bootstrap Col handles width */
+  width: 100%;
+  /* Ensures card takes full width of its column */
+  padding: 2rem;
+  /* Inner spacing */
+  margin: 0 auto;
+  /* Center card if it's not filling its container */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* Smooth transitions for hover */
+  /* This rule was in the original contact-section; the Project component uses it directly. */
+}
+
+.contact-card:hover {
+  box-shadow: 0 8px 15px rgba(0, 255, 156, 0.5);
+  /* Glowing shadow on hover */
+  transform: translateY(-5px);
+  /* Lifts the card slightly */
+}
+
+/* Banner at top of card */
+.card-banner img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+/* Recently Added Banner */
+.recent-banner {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  background: #ff1744;
+  color: #fff;
+  font-weight: bold;
+  padding: 2px 10px 2px 4px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  z-index: 2;
+  overflow: visible;
+  /* allow notch to stick out */
+}
+
+/* folded backside effect */
+.recent-banner::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  /* notch shifted slightly down */
+  left: -13px;
+  /* stick outside card */
+  width: 14px;
+  height: 100%;
+  background: #c1122f;
+  /* darker red for fold illusion */
+  clip-path: polygon(100% 0, 0 20%, 100% 50%, 0 80%, 100% 100%);
+  border-radius: 30px;
+  z-index: -1;
+  /* sits behind banner */
+}
+
+/* ========== Icon Circle (for project icons) ========== */
+/* Re-included here as it's used in the Project component, and is a single definition. */
+.icon-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: rgba(0, 255, 153, 0.1);
+  border: 2px solid #00ff99;
+  color: #00ff99;
+  font-size: 28px;
+  /* Adjusted to 1.5rem for consistency if needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  box-shadow: 0 0 15px #00ff99;
+  user-select: none;
+}
+
+/* ========== Offcanvas Custom Width ========== */
+/* Specific width adjustment for the Offcanvas component used for project details. */
+.offcanvas-half {
+  width: 50% !important;
+  max-width: 100vw;
+  /* Ensures it doesn't exceed viewport width */
+}
+
+@media (max-width: 768px) {
+
+  /* Bootstrap's md breakpoint */
+  .offcanvas-half {
+    width: 100% !important;
+    /* Full width on smaller screens */
+  }
+}
+
+/* ========== Horizontal Stepper (for project pipeline) ========== */
+/* Styles for the project pipeline steps */
+.horizontal-stepper-wrapper {
+  overflow-x: auto;
+  /* Enables horizontal scrolling if content overflows */
+  padding-bottom: 1rem;
+  /* Space below the scrollbar */
+}
+
+.horizontal-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 600px;
+  /* Ensures stepper has a minimum width, allowing scroll */
+  position: relative;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  /* Ensures steps are above other elements if needed */
+}
+
+.step-circle {
+  width: 40px;
+  height: 40px;
+  background-color: #0d6efd;
+  /* Bootstrap primary color */
+  color: #fff;
+  font-weight: bold;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 40px;
+  /* Centers text vertically */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+  /* Smooth hover effect */
+}
+
+.step-circle:hover {
+  transform: scale(1.1);
+  /* Slightly enlarges on hover */
+  cursor: pointer;
+}
+
+.step-line {
+  width: 60px;
+  height: 4px;
+  background-color: #0d6efd;
+  /* Line connecting steps */
+  margin: 0 12px;
+  /* Spacing around the line */
+  border-radius: 2px;
+}
+
+/* Optional tooltip styles (used with OverlayTrigger) */
+.custom-tooltip {
+  max-width: none !important;
+  /* Allows tooltip to expand naturally */
+  padding: 10px 14px;
+  background-color: #1a1a1a;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+/* ========== Custom Border (used on project cards) ========== */
+.custom_border {
+  border-color: rgba(255, 255, 255, 0.15);
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 12px;
+}
+
+/* ========== Expandable Card (for problem/goal/conclusion sections) ========== */
+/* These styles are applied via inline style and class on the Card,
+   but ensure the transition works. */
+/* The main `.custom-shadow` class is already covered by Carrier page CSS. */
+/* The Card.Body max-height and overflow styles are handled by React inline styles */
+
+/* ========== Contact Section ========== */
+.contact-section {
+  min-height: 100vh;
+  /* Ensures the section takes at least full viewport height */
+  background: radial-gradient(circle at center, #1c1c1c 0%, #0f0f0f 100%);
+  /* Radial gradient background */
+  color: #fff;
+  /* White text color */
+  padding: 4rem 0;
+  /* Vertical padding */
+  display: flex;
+  /* Flexbox for alignment */
+  align-items: center;
+  /* Vertically centers content */
+  position: relative;
+  overflow: hidden;
+}
+
+.submit_btn .btn {
+  background-color: #0dcaf0;
+  /* Overrides Bootstrap's default button background */
+  border-color: #0dcaf0;
+  /* To match the background */
+  color: white;
+  /* Ensure text is visible */
+}
+
+.submit_btn .btn:hover {
+  background-color: #0a9bd6;
+  /* Slightly darker on hover */
+  border-color: #0a9bd6;
+  box-shadow: 0 0 10px rgba(0, 255, 156, 0.2), inset 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+/* Note: `.contact-card` is also used in the Project page, but its primary
+   definition in the context of the larger original CSS is here. I'm assuming
+   the shared definition is fine. */
+/* .contact-card is used for the individual contact information blocks and project cards.
+   Its definition is primarily under "Project Cards" in your original file.
+   It's already been included in 'project-page-css' so it's not repeated here. */
+
+/* Icon wrapper within contact cards (e.g., for email, phone, social media icons) */
+.icon-wrapper {
+  font-size: 2.5rem;
+  /* Large icon size */
+  color: #00ff9c;
+  /* Green highlight color */
+  background-color: rgba(0, 255, 156, 0.1);
+  /* Light green transparent background */
+  width: 70px;
+  /* Fixed width for the circle */
+  height: 70px;
+  /* Fixed height for the circle */
+  border-radius: 50%;
+  /* Makes it a circle */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 1rem;
+  /* Centers horizontally and adds bottom margin */
+  box-shadow: 0 0 15px rgba(0, 255, 156, 0.4);
+  /* Green glow effect */
+}
+
+/* Styles for the form input fields */
+/* --- Base Styles for the form input fields --- */
+.form_class {
+  background-color: #131313;
+  /* Dark background for inputs */
+  color: #ffffff;
+  /* White text color for input */
+  border: none;
+  /* No border initially */
+  border-bottom: 2px solid #0dcaf0;
+  /* Blue bottom border - your original blue */
+  border-radius: 5px;
+  /* Slightly rounded corners for a modern feel */
+  padding: 0.75rem 0.8rem;
+  /* Inner padding, slightly increased for better look */
+  width: 100%;
+  /* Ensure inputs take full width of their container */
+  box-sizing: border-box;
+  /* Include padding in the element's total width and height */
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  /* Slower, smoother transition for all properties */
+}
+
+/* --- Focus state for form inputs --- */
+.form_class:focus {
+  outline: none;
+  /* Removes default outline */
+  border-color: transparent;
+  /* Makes original border transparent on focus */
+  border-bottom: 2px solid #00ed00;
+  /* Vibrant green bottom border on focus */
+  box-shadow: 0 4px 12px rgba(0, 237, 0, 0.2);
+  /* Subtle glow effect on focus */
+  background-color: #1e1e1e;
+  /* Slightly lighter dark background on focus */
+  border-radius: 10px;
+  /* More rounded on focus for a morphing effect */
+}
+
+/* --- Placeholder text color for form inputs --- */
+.form_class::placeholder {
+  color: #aaaaaa;
+  /* Lighter grey for placeholder */
+  opacity: 1;
+  /* Ensures placeholder is fully visible */
+  transition: opacity 0.3s ease;
+  /* Smooth transition for placeholder */
+}
+
+.form-control.bg-dark::placeholder {
+  color: #ffffff !important;
+  opacity: 0.7;
+}
+
+/* --- Placeholder text effect on focus (moves up and fades) --- */
+.form_class:focus::placeholder {
+  opacity: 0;
+  /* Fade out placeholder on focus */
+  transform: translateY(-10px);
+  /* Optional: move placeholder up slightly */
+}
+
+/* --- Styles for Form Labels --- */
+.form-group label {
+  /* Target Form.Label - assuming it renders as <label> */
+  color: #0dcaf0;
+  /* Blue color for labels */
+  font-weight: 600;
+  /* Slightly bolder labels */
+  margin-bottom: 0.5rem;
+  /* Space below label */
+  display: block;
+  /* Ensures label takes full width */
+  transition: color 0.3s ease;
+}
+
+/* --- Animation for labels when their input is focused --- */
+.form_class:focus+label {
+  /* Adjust selector if label is not a direct sibling after input */
+  color: #00ed00;
+  /* Change label color to green when input is focused */
+}
+
+/* If the label is before the input, you might need JavaScript or a different DOM structure to target it */
+/* A common pattern with React Bootstrap Forms is that the label is *before* the input in the DOM,
+   so a direct CSS selector like `+ label` won't work. For that, you might use:
+   .form-group:focus-within label { color: #00ed00; }
+   This targets the label when any descendant of .form-group is focused. */
+
+/* --- Styles for the Submit Button --- */
+.submit_btn .btn {
+  /* Target the Button component */
+  background-color: #0dcaf0;
+  /* Your primary blue */
+  border-color: #0dcaf0;
+  /* Matching border */
+  color: #ffffff;
+  /* White text */
+  padding: 0.8rem 2.5rem;
+  /* More generous padding */
+  font-size: 1.1rem;
+  /* Slightly larger font */
+  font-weight: 600;
+  /* Bold text */
+  border-radius: 50px;
+  /* Pill-shaped button */
+  transition: all 0.4s ease-in-out;
+  /* Smooth transition for hover effects */
+  letter-spacing: 1px;
+  /* Slight letter spacing */
+  overflow: hidden;
+  /* Hide overflow for internal animations */
+  position: relative;
+  /* For pseudo-elements */
+  z-index: 1;
+  /* Ensure button is above ripple effect */
+}
+
+.submit_btn .btn:hover {
+  background-color: #00ed00;
+  /* Green on hover */
+  border-color: #00ed00;
+  /* Matching green border */
+  transform: translateY(-3px);
+  /* Subtle lift effect */
+  box-shadow: 0 8px 20px rgba(0, 237, 0, 0.3);
+  /* Enhanced shadow */
+}
+
+.submit_btn .btn:active {
+  transform: translateY(0);
+  /* Press down effect on click */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Ripple Effect on Button Click (Optional but attractive) --- */
+.submit_btn .btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  /* White ripple */
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(1) translate(-50%, -50%);
+  transition: all 0.5s ease-out;
+  z-index: -1;
+}
+
+.submit_btn .btn:active::after {
+  transform: scale(150) translate(-50%, -50%);
+  /* Expand ripple */
+  opacity: 1;
+  transition: 0s;
+  /* No transition on active state for immediate ripple */
+}
+
+/* --- Animation for "Sending..." state --- */
+.submit_btn .btn:disabled {
+  background-color: #555;
+  /* Grey out when disabled */
+  border-color: #555;
+  cursor: not-allowed;
+  transform: none;
+  /* Remove lift */
+  box-shadow: none;
+  opacity: 0.7;
+  animation: pulseSending 1s infinite alternate;
+  /* Pulsing animation */
+}
+
+@keyframes pulseSending {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: scale(1.02);
+    opacity: 0.9;
+  }
+}
+
+/* --- Animation for the entire form section (optional, for initial load) --- */
+/* You would need to apply a class to your main form container, e.g., <Form className="contact-form-section"> */
+.contact-form-section {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease-out forwards;
+  animation-delay: 0.3s;
+  /* Delay the animation slightly after page load */
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Error message styling (from your screenshot) --- */
+.invalid-feedback {
+  /* Bootstrap's default class for validation feedback */
+  color: #ff4d4d;
+  /* Red color for error messages */
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+/* Specific adjustments for .form-control:focus overriding .form_class:focus */
+/* Since you have .form-control:focus, it might be overriding some of .form_class:focus.
+   It's better to combine them or ensure specificities align. */
+.form-control.form_class:focus {
+  color: #ffffff;
+  /* Keep text white on focus for .form_class */
+  background-color: #1e1e1e;
+  /* Match the new focused background */
+  border-radius: 10px;
+  /* Keep the desired border-radius from .form_class:focus */
+  outline: none;
+  /* Remove or adjust Bootstrap's default box-shadow if it conflicts */
+  box-shadow: 0 4px 12px rgba(0, 237, 0, 0.2);
+  /* Use our custom glow */
+}
+
+/* General body styles - often global, but included here as it relates to user interaction */
+body {
+  user-select: none;
+  /* Disables text selection */
+  -webkit-user-select: none;
+  /* For Webkit browsers */
+  -moz-user-select: none;
+  /* For Mozilla Firefox */
+}
+
+/* Screenshot blocker - if applicable, otherwise can be removed */
+/* This rule is for a visual effect to deter screenshots, might not be desired for all deployments. */
+.screenshot-blocker::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  /* Allows clicks to pass through */
+  z-index: 9999;
+  /* High z-index to be on top */
+  background-image: repeating-linear-gradient(45deg,
+      rgba(255, 255, 255, 0.02),
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 1px,
+      transparent 4px);
+  /* Subtle repeating pattern */
+}
+
+/* ========== Navigation Link Active State ========== */
+/* Styles for the active navigation link, typically in a header or navbar. */
+.nav-link.active {
+  font-weight: bold;
+  /* Makes the active link text bold */
+  color: #0dcaf0 !important;
+  /* Bootstrap info color - ensures it overrides other styles */
+  border-bottom: 2px solid #0dcaf0;
+  /* Adds a bottom border for visual emphasis */
+}
+
+/* Vistora_landingpage css */
+
+/* Gradient Hero Background */
+.hero-section {
+  background: linear-gradient(135deg, #4a2921, #d2413a, #a14d4d);
+  position: relative;
+  min-height: 90vh;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(255, 193, 7, 0.2), transparent 70%);
+  z-index: 0;
+}
+
+.hero-section * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(90deg, #ffc107, #ff9f1c, #ff4e50);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Premium Sections */
+.premium-section {
+  background: linear-gradient(135deg, #2c2c54, #1e1e2f);
+  color: #fff;
+}
+
+/* Glow Text */
+.glow-text {
+  text-shadow: 0 0 8px rgba(255, 193, 7, 0.3), 0 0 15px rgba(255, 193, 7, 0.2);
+}
+
+/* Light-muted text */
+.text-light-50 {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.mobile-app-features .glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.mobile-app-video {
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-app-video video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.2;
+  z-index: 0;
+}
+
+.mobile-app-video .btn {
+  font-size: 1.2rem;
+}
+
+.back-home-btn {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 40px;
+  color: #f1f1f1;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: all 0.35s ease;
+}
+
+/* Icon always visible */
+.back-home-btn .btn-icon {
+  display: inline-block;
+  margin-right: 0;
+  transition: margin-right 0.35s ease;
+}
+
+/* Text initially hidden above 992px */
+@media (min-width: 992px) {
+  .back-home-btn .btn-text {
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.35s ease, max-width 0.35s ease, margin 0.35s ease;
+    margin-left: 0;
+  }
+
+  /* Hover effect */
+  .back-home-btn:hover {
+    background: linear-gradient(135deg, #ffd95a, #ff7f50);
+    color: #111;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+  }
+
+  .back-home-btn:hover .btn-text {
+    opacity: 1;
+    max-width: 200px;
+    /* enough for full text */
+    margin-left: 8px;
+    /* space between icon and text */
+  }
+}
+
+/* Below 992px - text never appears */
+@media (max-width: 991px) {
+  .back-home-btn .btn-text {
+    display: none;
+  }
+
+  .back-home-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #f1f1f1;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.download-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 28px rgba(255, 193, 7, 0.6);
+}
+
+.qr-wrapper:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 30px rgba(255, 193, 7, 0.7);
+  cursor: pointer;
+}
+
+@keyframes gradient-move {
+  0% {
+    background-position: 0 0;
+  }
+
+  50% {
+    background-position: 0 100%;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+/* QR wrapper */
+.qr-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 16px;
+}
+
+/* Divider - vertical by default (above 992px) */
+.divider {
+  width: 2px;
+  height: auto;
+  background: linear-gradient(to bottom, #ffb400, #ff6a00, #ffb400);
+  border-radius: 1px;
+  animation: gradient-move 3s linear infinite;
+}
+
+/* Section height fix */
+.mobile-app-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  /* full screen on large screens */
+  overflow: visible;
+  position: relative;
+}
+
+/* Below 992px - horizontal divider & centered content */
+@media (max-width: 992px) {
+  .glass-card-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .divider {
+    width: 80%;
+    /* horizontal line */
+    height: 2px;
+    margin: 1.5rem 0;
+    background: linear-gradient(to right, #ffb400, #ff6a00, #ffb400);
+    /* horizontal gradient */
+  }
+
+  .download-left,
+  .qr-right {
+    width: 100%;
+    min-width: unset;
+    padding: 1rem 0;
+  }
+}
+
+/* Small screens - below 400px */
+@media (max-width: 400px) {
+  .glass-card-container {
+    width: 95%;
+    /* almost full width */
+    padding: 1rem;
+  }
+
+  .download-left,
+  .qr-right {
+    min-width: unset !important;
+    /* override inline min-width */
+    width: 100%;
+    padding: 0.5rem 0;
+  }
+
+  .download-left h3 {
+    font-size: 1.2rem;
+  }
+
+  .download-btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .qr-wrapper {
+    width: 130px !important;
+    height: 150px !important;
+    padding: 5px;
+  }
+
+  .qr-right p {
+    font-size: 0.75rem;
+  }
+}
+
+/* ----------------------------------------
+   Device wrapper (controls responsive scale)
+   ---------------------------------------- */
+.device-wrapper {
+  /* base front device width (scales between mobile/tablet/desktop) */
+  --fw: clamp(220px, 28vw, 340px);
+  position: relative;
+  width: calc(var(--fw) * 1.16);
+  /* room for the back device */
+  max-width: 100%;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ----------------------------------------
+   FRONT DEVICE — exactly the premium design
+   (keeps proportions you liked)
+   ---------------------------------------- */
+.premium-iphone {
+  width: var(--fw);
+  aspect-ratio: 9 / 19.5;
+  /* keep iPhone-like proportions */
+  background: #000;
+  border-radius: calc(var(--fw) * 0.147);
+  /* ~50px at 340 */
+  padding: calc(var(--fw) * 0.035);
+  /* ~12px bezel at 340 */
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 calc(var(--fw) * 0.059) calc(var(--fw) * 0.176) rgba(0, 0, 0, 0.7);
+  border: calc(var(--fw) * 0.0088) solid rgba(255, 255, 255, 0.1);
+  /* ~3px */
+  z-index: 2;
+  transform-origin: center;
+}
+
+/* Inner screen */
+.premium-iphone .screen {
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--fw) * 0.1176);
+  /* ~40px */
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad390);
+  box-shadow: inset 0 0 calc(var(--fw) * 0.0588) rgba(0, 0, 0, 0.6);
+}
+
+/* Decorative image behind the video (replace path if needed) */
+.premium-iphone .screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/assets/patterns/abstract-shapes.png") center/cover no-repeat;
+  opacity: 0.95;
+  z-index: 1;
+}
+
+/* Video filling the screen */
+/* .premium-iphone .screen video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  outline: none !important;
+  border: none !important;
+  border-radius: calc(var(--fw) * 0.1176);
+  position: relative;
+  z-index: 2;
+} */
+
+.premium-iphone .screen video {
+  outline: none !important;
+  border: none !important;
+  display: block;
+  /* removes inline gaps */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* prevents gaps/lines */
+  background-color: #000;
+  /* fills any pixel gaps */
+
+}
+
+/* Samsung punch-hole notch (centered) */
+.premium-iphone .notch {
+  position: absolute;
+  top: calc(var(--fw) * 0.0235);
+  /* ~8px */
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(var(--fw) * 0.053);
+  /* ~18px */
+  height: calc(var(--fw) * 0.053);
+  background: #111;
+  border-radius: 50%;
+  z-index: 3;
+  box-shadow: 0 calc(var(--fw) * 0.0058) calc(var(--fw) * 0.0176) rgba(0, 0, 0, 0.5);
+  border: calc(var(--fw) * 0.0059) solid rgba(255, 255, 255, 0.2);
+  /* ~2px */
+}
+
+/* Home bar */
+.premium-iphone .home-bar {
+  position: absolute;
+  bottom: calc(var(--fw) * 0.035);
+  /* ~12px */
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(var(--fw) * 0.264);
+  /* ~90px */
+  height: calc(var(--fw) * 0.0176);
+  /* ~6px */
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 50px;
+  z-index: 3;
+}
+
+/* hover / lift */
+.shadow-hover {
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.shadow-hover:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 28px 75px rgba(255, 215, 0, 0.35);
+}
+
+/* ----------------------------------------
+   BACK DEVICE — Samsung S22-like backside visualization
+   (keeps a visually identical back look, camera stack)
+   ---------------------------------------- */
+.back-device {
+  position: absolute;
+  /* position and size are proportional to front device (--fw) */
+  top: calc(var(--fw) * 0.0588);
+  /* ~20px */
+  left: calc(var(--fw) * -0.235);
+  /* ~-80px */
+  width: calc(var(--fw) * 0.8235);
+  /* ~280px */
+  aspect-ratio: 9 / 19.5;
+  background: linear-gradient(145deg, #0f0f10, #1f1f22);
+  border-radius: calc(var(--fw) * 0.147);
+  box-shadow: 0 calc(var(--fw) * 0.044) calc(var(--fw) * 0.147) rgba(0, 0, 0, 0.5);
+  transform: rotate(-8deg) scale(0.95);
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* OPTIONAL: if you prefer to use a photographic back image,
+   uncomment the next line and put your image at the path:
+   .back-device { background: url("/assets/device/s22-back.png") center/cover no-repeat; }
+*/
+
+/* Camera housing (rounded vertical module) */
+.back-device .camera-stack {
+  position: absolute;
+  top: 8%;
+  left: 12%;
+  width: 18%;
+  height: 45%;
+  border-radius: calc(var(--fw) * 0.088);
+  /* soft rounding */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: calc(var(--fw) * 0.02);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.95), rgba(40, 40, 40, 0.85));
+  box-shadow:
+    0 0 0 calc(var(--fw) * 0.0118) rgba(255, 255, 255, 0.06),
+    0 calc(var(--fw) * 0.0176) calc(var(--fw) * 0.044) rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  border-radius: 999px;
+}
+
+/* Each lens */
+.back-device .camera-stack .lens {
+  width: 68%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #4b4b4b, #000);
+  box-shadow: inset 0 calc(var(--fw) * 0.005) calc(var(--fw) * 0.015) rgba(255, 255, 255, 0.06),
+    0 calc(var(--fw) * 0.004) calc(var(--fw) * 0.02) rgba(0, 0, 0, 0.6);
+  transform: translateZ(0);
+}
+
+/* small flash / sensor dot */
+.back-device .camera-stack .flash {
+  width: 22%;
+  height: 10%;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #ffd84d, #ffb84d);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+}
+
+/* ----------------------------------------
+   Premium cards (kept as you had)
+   ---------------------------------------- */
+.premium-card {
+  background: linear-gradient(145deg, #1a1a1a, #111);
+  border-radius: 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.premium-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(255, 215, 0, 0.3);
+}
+
+/* ----------------------------------------
+   Responsive tweaks — keep appearance identical,
+   just adjust back offset/rotation on small screens
+   ---------------------------------------- */
+@media (max-width: 992px) {
+  .back-device {
+    left: calc(var(--fw) * -0.18);
+    transform: rotate(-6deg) scale(0.93);
+  }
+}
+
+@media (max-width: 576px) {
+
+  /* bring back-device closer, keep everything visible */
+  .back-device {
+    left: calc(var(--fw) * -0.14);
+    transform: rotate(-5deg) scale(0.88);
+  }
+
+  .premium-iphone {
+    border-radius: calc(var(--fw) * 0.13);
+    /* slightly less on small screens */
+  }
+
+  .back-device .camera-stack {
+    display: flex;
+  }
+
+  /* keep camera visible */
+}
+
+@keyframes pulse {
+          0% {
+            transform: scale(1);
+            opacity: 0.9;
+          }
+          50% {
+            transform: scale(1.1);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(1);
+            opacity: 0.9;
+          }
+        }
