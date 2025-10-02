@@ -1,0 +1,22 @@
+# run in project root
+Set-Content -Path .gitignore -Value @"
+# dependencies
+node_modules/
+
+# build output
+build/
+dist/
+
+# logs, env
+.env
+npm-debug.log*
+
+# large media
+*.mp4
+*.mov
+*.zip
+*.tar.gz
+
+# OS
+.DS_Store
+"@
