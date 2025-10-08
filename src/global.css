@@ -1,3 +1,6 @@
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
+
 /* ========== Hero Section ========== */
 .hero-wrapper {
   background: linear-gradient(135deg, #0f0f0f 0%, #222 100%);
@@ -1915,16 +1918,88 @@ body {
 }
 
 @keyframes pulse {
-          0% {
-            transform: scale(1);
-            opacity: 0.9;
-          }
-          50% {
-            transform: scale(1.1);
-            opacity: 1;
-          }
-          100% {
-            transform: scale(1);
-            opacity: 0.9;
-          }
-        }
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+}
+
+/* Glassmorphism with spacing */
+.premium-review-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 200px;   /* shorter height */
+  max-height: 240px;   /* cap the size */
+  padding: 16px;       /* compact padding */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.premium-review-card:hover {
+  transform: scale(1.03); /* slightly smaller zoom to fit within height */
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.7);
+}
+
+/* Avatar */
+.premium-avatar {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border: 2px solid gold;
+  padding: 2px;
+  background: #111;
+}
+
+/* Divider */
+.premium-divider {
+  border-top: 1px solid rgba(255, 215, 0, 0.25);
+  margin: 0rem 0;
+}
+
+/* Decorative Lines */
+.premium-line {
+  height: 1px;
+  background: linear-gradient(to right, transparent, gold, transparent);
+  margin-top: 0; /* keep it close to review text */
+}
+
+.glowing-diamond {
+  animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+  0% {
+    text-shadow: 0 0 5px gold, 0 0 10px gold;
+  }
+
+  50% {
+    text-shadow: 0 0 15px gold, 0 0 25px gold;
+  }
+
+  100% {
+    text-shadow: 0 0 5px gold, 0 0 10px gold;
+  }
+}
+
+/* Gold text */
+.text-gold {
+  color: gold !important;
+}
+
+.slick-slide {
+  padding: 0 12px; /* <-- gap between cards */
+}

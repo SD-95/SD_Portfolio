@@ -1,21 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-    Card,
-    Col,
-    Container,
-    Row,
-    Offcanvas,
-    OverlayTrigger,
-    Tooltip
+    Card, Col, Container, Row, Offcanvas,
+    OverlayTrigger, Tooltip, Modal, Button, Form
 } from 'react-bootstrap';
 import BubbleBackground from './BubbleBackground';
-import { FaGithub } from 'react-icons/fa';
-import { FaChevronDown } from 'react-icons/fa';
-import vistora from '../assets/circle_logo.png'
-import blog from '../assets/blog.png'
-import crypto from '../assets/crypto.jpg'
+import { FaGem, FaGithub, FaRegCommentDots, FaStar, FaChevronDown } from 'react-icons/fa';
+import vistora from '../assets/circle_logo.png';
+import blog from '../assets/blog.png';
+import crypto from '../assets/crypto.jpg';
+import Cus_pr from '../assets/pr1.jpg';
 import { MdFiberNew } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import Slider from "react-slick";
+
+import { 
+    collection, addDoc, onSnapshot, query, orderBy,
+    serverTimestamp, Timestamp
+} from "firebase/firestore";
+import { db } from '../Firebaseapi';
+
 
 interface Project {
     title: string;
@@ -26,9 +29,9 @@ interface Project {
     process: string;
     conclusion: string;
     githubLink?: string;
-    banner_text?: string;   // ✅ New: banner image for top portion
-    recent?: boolean;  // ✅ New: recently added flag
-    recent_message?: string;  // ✅ New: recently added flag
+    banner_text?: string;
+    recent?: boolean;
+    recent_message?: string;
     showOnLandingPage?: boolean;
 }
 
@@ -38,7 +41,6 @@ interface StepperProps {
 
 const HorizontalStepper: React.FC<StepperProps> = ({ process }) => {
     const steps = process?.split('\n').filter(Boolean) || [];
-
     return (
         <div className="horizontal-stepper-wrapper my-4">
             <div className="horizontal-stepper d-flex align-items-center">
@@ -104,77 +106,75 @@ const ExpandableCard = ({ title, content }: { title: string, content: string }) 
     );
 };
 
+interface Review {
+    id?: string;
+    projectId: string;
+    userName: string;
+    reviewText: string;
+    rating: number;
+    createdAt: Timestamp | null;
+}
+
 const Project: React.FC = () => {
     const navigate = useNavigate();
     const [showCanvas, setShowCanvas] = useState(false);
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const [loading, setLoading] = useState(false);
+    const [showReviewModal, setShowReviewModal] = useState(false);
+    const [reviews, setReviews] = useState<Review[]>([]);
+    const [userName, setUserName] = useState("");
+    const [reviewText, setReviewText] = useState("");
+    const [rating, setRating] = useState(0);
+    const [activeProject, setActiveProject] = useState<string>("");
 
-    const projectsData: Project[] = [
-        {
-            title: 'Crypto Liquidity Predictor',
-            icon: crypto,
-            desc: 'Machine learning-based system to predict crypto liquidity and ensure market stability.',
-            problem:
-                `Cryptocurrency markets often experience sudden liquidity fluctuations due to volatile trading volumes, irregular transaction patterns, exchange dynamics, and social media influence. These unpredictable shifts pose significant risks to traders and exchange platforms, making it challenging to manage asset stability and trading strategies effectively.`,
-            goal:
-                `Develop a robust machine learning model that analyzes market factors—such as trading volume, transaction trends, exchange listings, and social sentiment—to accurately predict cryptocurrency liquidity levels. The goal is to enable early detection of potential liquidity crises, empowering stakeholders with timely insights for risk mitigation and strategic decision-making.`,
-            process: `Step 1: Data Collection: Gathered historical data (2016–2017) on price, volume, and market cap.
-Step 2: Feature Engineering: Computed Amihud ratio, rolling stats, cap-to-volume ratio, and percentage changes.
-Step 3: Model Training: Trained Linear Regression, Decision Tree, XGBoost, and LSTM models using PyTorch.
-Step 4: Evaluation: Compared models using R², RMSE, MAE, and confusion matrix for classification.
-Step 5: Deployment: Built a React UI and Flask backend, locally deployed the system for real-time testing.`,
-            conclusion:
-                'The project successfully developed a multi-class classification model to predict cryptocurrency liquidity levels using engineered market features and time-series data. The combined Random Forest and LSTM models achieved strong performance, enabling real-time liquidity crisis detection through a deployed Flask API. This solution supports informed decision-making and enhances market stability.',
-            githubLink: 'https://sd-95.github.io/crypto_frontend/',
-            showOnLandingPage: false
-        },
-        {
-            title: 'Blog Speaks webApp',
-            icon: blog,
-            desc: 'A blogging platform with full CRUD support using React and Flask.',
-            problem: 'Lack of a minimal, user-friendly platform for managing blog content dynamically.',
-            goal: 'Create a secure, dynamic blogging app with token-based authentication and CRUD APIs.',
-            process: `Step 1: UI Design: Built a responsive frontend using React and Bootstrap.
-Step 2: API Backend: Developed RESTful API in Flask with SQLite integration.
-Step 3: CRUD Features: Implemented Create, Read, Update, Delete functionalities.
-Step 4: Page Routing: Enabled seamless page transitions for different blog actions.`,
-            conclusion: 'Deployed a clean, functional blogging app with intuitive user experience and full-stack integration.',
-            githubLink: 'https://sd-95.github.io/blog_speak_frontend/',
-            showOnLandingPage: false
-        },
-        {
-            title: 'Ecommerce App + Admin console (VISTORA)',
-            icon: vistora,
-            desc: 'Vistora React Native E-commerce app with an integrated Admin Console to manage products, users, and orders in real time.',
-            problem: 'Lack of a minimal, user-friendly platform for managing blog content dynamically.',
-            goal: 'Create a secure, dynamic blogging app with token-based authentication and CRUD APIs.',
-            process: `Step 1: UI Design: Built a responsive frontend using React and Bootstrap.
-Step 2: API Backend: Developed RESTful API in Flask with SQLite integration.
-Step 3: CRUD Features: Implemented Create, Read, Update, Delete functionalities.
-Step 4: Page Routing: Enabled seamless page transitions for different blog actions.`,
-            conclusion: 'Deployed a clean, functional blogging app with intuitive user experience and full-stack integration.',
-            githubLink: 'https://sd-95.github.io/blog_speak_frontend/',
-            banner_text: 'The Project is under development....',
-            recent: true,
-            recent_message: 'Released..',
-            showOnLandingPage: true
+    // Fetch reviews for active project
+    useEffect(() => {
+  const q = query(collection(db, "reviews"), orderBy("createdAt", "desc"));
+  const unsubscribe = onSnapshot(q, (snapshot) => {
+    const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Review[];
+    setReviews(data);
+    console.log("Fetched all reviews:", data);
+  });
+  return () => unsubscribe();
+}, []);
+
+    // Submit a new review
+    const handleReviewSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!userName.trim() || !reviewText.trim() || !rating) {
+            alert("Please fill all fields");
+            return;
         }
-    ];
+
+        try {
+            await addDoc(collection(db, "reviews"), {
+                projectId: activeProject,
+                userName,
+                reviewText,
+                rating,
+                createdAt: serverTimestamp(),
+            });
+
+            // Reset form
+            setUserName("");
+            setReviewText("");
+            setRating(0);
+            setShowReviewModal(false);
+        } catch (err) {
+            console.error("Error adding review:", err);
+        }
+    };
 
     const handleShow = (project: Project) => {
         if (project.showOnLandingPage) {
-            // Show loader
             setLoading(true);
-
-            // Wait 1.5s (or any duration) then redirect
             setTimeout(() => {
                 setLoading(false);
                 navigate(`/Vistora_landingpage`);
             }, 1500);
         } else {
-            // 👉 Show Offcanvas
             setSelectedProject(project);
+            setActiveProject(project.title); // Ensure reviews load for this project
             setShowCanvas(true);
         }
     };
@@ -184,40 +184,121 @@ Step 4: Page Routing: Enabled seamless page transitions for different blog actio
         setSelectedProject(null);
     };
 
+    const projectsData: Project[] = [
+        {
+            title: 'Crypto Liquidity Predictor',
+            icon: crypto,
+            desc: 'Machine learning-based system to predict crypto liquidity and ensure market stability.',
+            problem: `Cryptocurrency markets often experience sudden liquidity fluctuations...`,
+            goal: `Develop a robust machine learning model that analyzes market factors...`,
+            process: `Step 1: Data Collection...`,
+            conclusion: 'The project successfully developed a multi-class classification model...',
+            githubLink: 'https://sd-95.github.io/crypto_frontend/',
+            showOnLandingPage: false
+        },
+        {
+            title: 'Blog Speaks webApp',
+            icon: blog,
+            desc: 'A blogging platform with full CRUD support using React and Flask.',
+            problem: 'Lack of a minimal, user-friendly platform...',
+            goal: 'Create a secure, dynamic blogging app...',
+            process: `Step 1: UI Design...`,
+            conclusion: 'Deployed a clean, functional blogging app...',
+            githubLink: 'https://sd-95.github.io/blog_speak_frontend/',
+            showOnLandingPage: false
+        },
+        {
+            title: 'Ecommerce App + Admin console (VISTORA)',
+            icon: vistora,
+            desc: 'Vistora React Native E-commerce app...',
+            problem: 'Lack of a minimal platform for managing content dynamically.',
+            goal: 'Create a secure, dynamic blogging app...',
+            process: `Step 1: UI Design...`,
+            conclusion: 'Deployed a clean, functional app...',
+            githubLink: 'https://sd-95.github.io/blog_speak_frontend/',
+            banner_text: 'The Project is under development....',
+            recent: true,
+            recent_message: 'Released..',
+            showOnLandingPage: true
+        }
+    ];
+
+    const formatDate = (date: Timestamp | null) => {
+        if (!date) return "";
+        return date.toDate().toLocaleString();
+    };
+
+    const ReviewCarousel = () => {
+        const settings = {
+            dots: false,
+            infinite: true,
+            speed: 4000,
+            autoplay: true,
+            autoplaySpeed: 0,
+            cssEase: "linear",
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            pauseOnHover: true,
+            responsive: [
+                { breakpoint: 992, settings: { slidesToShow: 2 } },
+                { breakpoint: 576, settings: { slidesToShow: 1 } },
+            ],
+        };
+
+        return (
+            <div className="my-5">
+                <h2 className="text-center text-warning fw-bold mb-4">Customer Review</h2>
+                <Slider {...settings}>
+                    {reviews.length > 0 ? reviews.map((review) => (
+                        <Card key={review.id} className="premium-review-card text-white p-3 shadow-lg rounded-4">
+                            <div className="d-flex align-items-center mb-3">
+                                <img src={Cus_pr} alt={review.userName} className="rounded-circle premium-avatar" />
+                                <div className="ms-3">
+                                    <h6 className="mb-0 fw-bold text-warning">{review.userName}</h6>
+                                    <div className="d-flex align-items-center text-warning small mb-1">
+                                        {Array.from({ length: 5 }, (_, i) => (
+                                            <FaStar key={i} className={i < review.rating ? "text-warning" : "text-muted"} />
+                                        ))}
+                                    </div>
+                                    <small style={{ color: "rgba(255,255,255,0.7)" }} className="fst-italic">
+                                        {formatDate(review.createdAt)}
+                                    </small>
+                                </div>
+                            </div>
+                            <hr className="premium-divider" />
+                            <p className="fst-italic fs-5 lh-lg flex-grow-1 text-light">“{review.reviewText}”</p>
+                            <div className="d-flex align-items-center justify-content-center mt-2 text-gold">
+                                <div className="flex-grow-1 premium-line"></div>
+                                <span className="mx-3 text-warning glowing-diamond"><FaGem size={18} /></span>
+                                <div className="flex-grow-1 premium-line"></div>
+                            </div>
+                        </Card>
+                    )) : (
+                        <p className="text-center text-light fst-italic">No reviews yet. Be the first to review!</p>
+                    )}
+                </Slider>
+            </div>
+        );
+    };
+
     return (
         <section id="projects" className="py-5 bg-dark text-white" style={{ minHeight: '100vh' }}>
             <BubbleBackground />
             {loading && (
-                <div
-                    className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-75"
-                    style={{ zIndex: 2000 }}
-                >
+                <div className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-75" style={{ zIndex: 2000 }}>
                     <div className="spinner-border text-light" role="status" style={{ width: '3rem', height: '3rem' }}>
                         <span className="visually-hidden">Loading...</span>
                     </div>
                 </div>
             )}
-            <Container>
-                <div className="row justify-content-center align-items-center mb-5">
-                    <div className="col-12 col-md-8 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
-                        {/* Heading */}
-                        <h2 className="fw-bold m-0 text-white">Projects</h2>
 
-                        {/* Search bar */}
-                        <input
-                            type="text"
-                            placeholder="Search projects..."
-                            className="form-control bg-dark text-white border border-secondary rounded-pill"
-                            style={{ maxWidth: "300px" }}
-                        />
-                    </div>
-                </div>
+            <Container>
+                {/* Projects grid */}
                 <Row className="g-4">
                     {projectsData.map((project, index) => (
                         <Col md={4} key={index}>
                             <Card className="h-100 contact-card bg-dark custom_border text-white p-3 d-flex justify-content-between">
                                 <div className="p-3 flex-grow-1 d-flex flex-column justify-content-between">
-                                    {/* ✅ Recently Added Ribbon */}
                                     {project.recent && (
                                         <div className="recent-banner">
                                             <span><MdFiberNew size={20} />{project.recent_message}</span>
@@ -225,27 +306,28 @@ Step 4: Page Routing: Enabled seamless page transitions for different blog actio
                                     )}
                                     <div>
                                         <div className="icon-circle mb-3 fs-2">
-                                            <img src={project.icon} alt={`${project.title} icon`} style={{ width: "50px", height: "50px", objectFit: "contain", }} />
+                                            <img src={project.icon} alt={`${project.title} icon`} style={{ width: "50px", height: "50px", objectFit: "contain" }} />
                                         </div>
                                         <h5>{project.title}</h5>
                                         <p>{project.desc}</p>
                                     </div>
                                 </div>
                                 <div className="d-flex align-items-center mt-auto">
-                                    {/* ✅ Optional Banner (left side) */}
                                     {project.banner_text && (
                                         <div className="card-banner text-warning fw-bold me-auto">
                                             {project.banner_text}
                                         </div>
                                     )}
-
-                                    {/* ✅ Arrow (always on the right side) */}
+                                    <div
+                                        style={{ cursor: "pointer", fontSize: "1.5rem", marginRight: "15px" }}
+                                        title="Leave a Review"
+                                        onClick={() => { setActiveProject(project.title); setShowReviewModal(true); }}
+                                    >
+                                        <FaRegCommentDots />
+                                    </div>
                                     <div
                                         onClick={() => handleShow(project)}
-                                        style={{
-                                            cursor: 'pointer',
-                                            fontSize: '1.5rem',
-                                        }}
+                                        style={{ cursor: 'pointer', fontSize: '1.5rem' }}
                                         title="View Details"
                                         className="ms-auto"
                                     >
@@ -257,66 +339,83 @@ Step 4: Page Routing: Enabled seamless page transitions for different blog actio
                     ))}
                 </Row>
 
-                <Offcanvas
-                    show={showCanvas}
-                    onHide={handleClose}
-                    placement="end"
-                    backdrop={true}
-                    className="offcanvas-half bg-dark text-white my-2"
-                >
+                <ReviewCarousel />
+
+                {/* Project details Offcanvas */}
+                <Offcanvas show={showCanvas} onHide={handleClose} placement="end" backdrop={true} className="offcanvas-half bg-dark text-white my-2">
                     <Offcanvas.Body className='my-2'>
                         {selectedProject && (
                             <div className="d-flex flex-column gap-3">
                                 <div className="d-flex justify-content-between align-items-center">
                                     <h4 className="text-white">{selectedProject.title}</h4>
                                     {selectedProject.githubLink && (
-                                        <a
-                                            href={selectedProject.githubLink}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-white"
-                                            title="View GitHub Repo"
-                                            style={{ fontSize: '1.5rem' }}
-                                        >
+                                        <a href={selectedProject.githubLink} target="_blank" rel="noopener noreferrer" className="text-white" title="View GitHub Repo" style={{ fontSize: '1.5rem' }}>
                                             <FaGithub />
                                         </a>
                                     )}
                                 </div>
-
                                 <ExpandableCard title="🔍 Problem Statement" content={selectedProject.problem} />
                                 <ExpandableCard title="🎯 Project Goal" content={selectedProject.goal} />
-
                                 <Card text="white" className="border-0 custom-shadow text-white">
                                     <Card.Header className="fw-bold">⚙️ Project pipeline</Card.Header>
                                     <Card.Body>
                                         <HorizontalStepper process={selectedProject.process} />
                                     </Card.Body>
                                 </Card>
-
-                                {/* Added Project Summary Card */}
-                                {selectedProject.title == 'Crypto Liquidity Predictor' ? <Card bg="dark" text="white" className="border-0 custom-shadow">
-                                    <Card.Header className="fw-bold">📄 Project Summary</Card.Header>
-                                    <Card.Body>
-                                        <ul className="mb-0" style={{ listStyleType: 'disc', paddingLeft: '1.2rem' }}>
-                                            <li><strong>Objective:</strong> Predict liquidity levels (High, Medium, Low) for cryptocurrencies to identify potential liquidity crises.</li>
-                                            <li><strong>Data:</strong> Daily data (2016–2017) for multiple cryptocurrencies with price, % changes, 24h volume, and market cap.</li>
-                                            <li><strong>Preprocessing:</strong> Cleaned missing data and standardized date format for time-series consistency.</li>
-                                            <li><strong>Feature Engineering:</strong> Lag features, 2-day moving averages, ratio-based features, and log transformations for normalization.</li>
-                                            <li><strong>EDA Highlights:</strong> Corrected skewed distributions, strong volume-market cap correlation, balanced liquidity classes.</li>
-                                            <li><strong>Modeling Approach:</strong> Multi-class classification with Random Forest and LSTM base models, combined via Logistic Regression stacking.</li>
-                                            <li><strong>Model Training:</strong> GridSearchCV with TimeSeriesSplit for tuning; LSTM used sliding window inputs.</li>
-                                            <li><strong>Evaluation:</strong> Used Precision, Recall, F1-score, and Accuracy; models showed strong performance.</li>
-                                            <li><strong>Model Saving:</strong> Saved models and preprocessors via joblib and Keras (.pkl and .h5 files).</li>
-                                            <li><strong>Deployment:</strong> Flask API hosted on Render; real-time web app with GitHub version control.</li>
-                                        </ul>
-                                    </Card.Body>
-                                </Card> : ''}
-
                                 <ExpandableCard title="✅ Conclusion" content={selectedProject.conclusion} />
                             </div>
                         )}
                     </Offcanvas.Body>
                 </Offcanvas>
+
+                {/* Review Modal */}
+                <Modal show={showReviewModal} onHide={() => setShowReviewModal(false)} centered>
+                    <Modal.Header closeButton className="bg-dark text-light border-secondary">
+                        <Modal.Title>Leave a Review</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className="bg-dark text-light">
+                        <Form onSubmit={handleReviewSubmit}>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Your Name</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={userName}
+                                    onChange={(e) => setUserName(e.target.value)}
+                                    placeholder="Enter your name"
+                                    className="bg-dark text-light border-secondary"
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Your Review</Form.Label>
+                                <Form.Control
+                                    as="textarea"
+                                    rows={3}
+                                    value={reviewText}
+                                    onChange={(e) => setReviewText(e.target.value)}
+                                    placeholder="Share your feedback..."
+                                    className="bg-dark text-light border-secondary"
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Rating</Form.Label>
+                                <div>
+                                    {Array.from({ length: 5 }, (_, i) => (
+                                        <FaStar
+                                            key={i}
+                                            size={22}
+                                            style={{ cursor: 'pointer', marginRight: '8px' }}
+                                            color={i < rating ? 'gold' : 'gray'}
+                                            onClick={() => setRating(i + 1)}
+                                        />
+                                    ))}
+                                </div>
+                            </Form.Group>
+                            <div className="text-center">
+                                <Button type="submit" variant="warning" className="rounded-pill px-4 fw-semibold">Submit Review</Button>
+                            </div>
+                        </Form>
+                    </Modal.Body>
+                </Modal>
             </Container>
         </section>
     );
